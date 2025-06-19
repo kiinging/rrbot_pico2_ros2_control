@@ -6,7 +6,7 @@
         "limitSymbolsToIncludedHeaders": false
       },
       "includePath": [
-        "/home/pizza/ros2_projects/rrbot_pico_hw/ros2_ws/install/servobot_pico_driver/include/**",
+        "/home/pizza/ros2_projects/rrbot_pico_hw/ros2_ws/install/rrbot_ros2_system /include/**",
         "/opt/ros/jazzy/include/**",
         "/usr/include/**"
       ],
