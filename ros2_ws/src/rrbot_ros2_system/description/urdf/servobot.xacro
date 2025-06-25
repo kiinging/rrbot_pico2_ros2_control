@@ -1,0 +1,218 @@
+<?xml version="1.0" ?>
+<robot name="servobot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+<xacro:include filename="$(find rrbot_ros2_system)/urdf/materials.xacro" />
+<xacro:include filename="$(find rrbot_ros2_system)/description/urdf/servobot.trans" />
+<link name="base_link">
+  <inertial>
+    <origin xyz="0.0005169259842484936 4.927774522263481e-07 0.0185514383477924" rpy="0 0 0"/>
+    <mass value="1.3063261167533025"/>
+    <inertia ixx="0.001709" iyy="0.001736" izz="0.002971" ixy="-0.0" iyz="-0.0" ixz="4e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/base_link.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link1_1">
+  <inertial>
+    <origin xyz="-0.001085236831239781 -0.007802435833620399 0.010098622999995588" rpy="0 0 0"/>
+    <mass value="0.856114888950798"/>
+    <inertia ixx="0.00064" iyy="0.000677" izz="0.001178" ixy="-1.4e-05" iyz="6.4e-05" ixz="1.2e-05"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0 -0.0475" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/link1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 0.0 -0.0475" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/link1_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="base_enclosure_1">
+  <inertial>
+    <origin xyz="2.4605362489746613e-15 0.051499999999999976 0.0019771225490889874" rpy="0 0 0"/>
+    <mass value="0.25288882419654"/>
+    <inertia ixx="0.000217" iyy="0.000217" izz="0.000433" ixy="-0.0" iyz="0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 0.0515 -0.0448" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/base_enclosure_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 0.0515 -0.0448" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/base_enclosure_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="servo2_1">
+  <inertial>
+    <origin xyz="0.02438234374963684 -0.008097752979871475 0.005000000000000032" rpy="0 0 0"/>
+    <mass value="0.2557057360993377"/>
+    <inertia ixx="4e-05" iyy="4.6e-05" izz="6.9e-05" ixy="-1e-06" iyz="-0.0" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0341 0.02 -0.0819" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/servo2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="nylon_12_with_formlabs_fuse_1_3d_printer"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0341 0.02 -0.0819" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/servo2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link2_1">
+  <inertial>
+    <origin xyz="4.847810769320363e-05 0.0016252000933083266 0.0912675284128768" rpy="0 0 0"/>
+    <mass value="0.33447882881560465"/>
+    <inertia ixx="0.001416" iyy="0.001442" izz="2.9e-05" ixy="0.0" iyz="2e-06" ixz="1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="-0.00015 0.005 -0.0869" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/link2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="-0.00015 0.005 -0.0869" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/link2_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="servo3_1">
+  <inertial>
+    <origin xyz="0.005000000000000005 -0.008097752979871468 0.024382343749636937" rpy="0 0 0"/>
+    <mass value="0.2557057360993377"/>
+    <inertia ixx="6.9e-05" iyy="4.6e-05" izz="4e-05" ixy="0.0" iyz="-1e-06" ixz="-0.0"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.005 0.0 -0.2628" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/servo3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="nylon_12_with_formlabs_fuse_1_3d_printer"/>
+  </visual>
+  <collision>
+    <origin xyz="0.005 0.0 -0.2628" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/servo3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="link3_1">
+  <inertial>
+    <origin xyz="4.847810769323828e-05 0.001625200093308344 0.09126752841287683" rpy="0 0 0"/>
+    <mass value="0.33447882881560465"/>
+    <inertia ixx="0.001416" iyy="0.001442" izz="2.9e-05" ixy="0.0" iyz="2e-06" ixz="1e-06"/>
+  </inertial>
+  <visual>
+    <origin xyz="0.0 -0.015 -0.29705" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/link3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+    <material name="steel_satin"/>
+  </visual>
+  <collision>
+    <origin xyz="0.0 -0.015 -0.29705" rpy="0 0 0"/>
+    <geometry>
+      <mesh filename="package://rrbot_ros2_system/meshes/link3_1.stl" scale="0.001 0.001 0.001"/>
+    </geometry>
+  </collision>
+</link>
+
+<link name="effector">
+  <visual>
+    <origin xyz="0.0 0.005 0.0" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.01">
+      </sphere>
+    </geometry>
+  </visual>
+  <collision>
+    <origin xyz="0.0 0.005 0.0" rpy="0 0 0"/>
+    <geometry>
+      <sphere radius="0.01">
+      </sphere>
+    </geometry>
+  </collision>
+</link>
+
+<joint name="joint1" type="revolute">
+  <origin xyz="0.0 0.0515 0.0027" rpy="0 0 0"/>
+  <parent link="base_enclosure_1"/>
+  <child link="link1_1"/>
+  <axis xyz="0.0 0.0 1.0"/>
+  <limit effort="1.55" velocity="${2*pi}" lower="-${pi/2}" upper="${pi/2}" />
+</joint>
+
+<joint name="base_enclosure" type="fixed">
+  <origin xyz="0.0 -0.0515 0.0448" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="base_enclosure_1"/>
+</joint>
+
+<joint name="link1_servo2" type="fixed">
+  <origin xyz="-0.0341 -0.02 0.0344" rpy="0 0 0"/>
+  <parent link="link1_1"/>
+  <child link="servo2_1"/>
+</joint>
+
+<joint name="joint2" type="revolute">
+  <origin xyz="0.03425 0.015 0.005" rpy="0 0 0"/>
+  <parent link="servo2_1"/>
+  <child link="link2_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+  <limit effort="1.55" velocity="${2*pi}" lower="-${pi/2}" upper="${pi/2}" />
+</joint>
+
+<joint name="link2_servo3" type="fixed">
+  <origin xyz="-0.00515 0.005 0.1759" rpy="0 0 0"/>
+  <parent link="link2_1"/>
+  <child link="servo3_1"/>
+</joint>
+
+<joint name="joint3" type="revolute">
+  <origin xyz="0.005 0.015 0.03425" rpy="0 0 0"/>
+  <parent link="servo3_1"/>
+  <child link="link3_1"/>
+  <axis xyz="0.0 -1.0 0.0"/>
+  <limit effort="1.55" velocity="${2*pi}" lower="-${pi/2}" upper="${pi/2}" />
+</joint>
+
+<joint name="effector_link2" type="fixed">
+  <origin xyz="0.0 0.005 0.22" rpy="0 0 0"/>
+  <parent link="link3_1"/>
+  <child link="effector"/>
+</joint>
+
+</robot>
