@@ -1,10 +1,11 @@
+add_subdirectory(pca9685)  # ✅ NEW: Add this to pull in src/pca9685/CMakeLists.txt
+
 add_executable(${PROJECT_NAME}
     main.cpp
     )
 
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_LIST_DIR}/..
-    ${CMAKE_CURRENT_LIST_DIR}/../include/pca9685
 )
 
 

@@ -23,6 +23,10 @@ endif()
 
 pico_sdk_init()
 
+# Include global project headers
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+
 
 # Updated compiler flags for C++
 add_compile_options(
@@ -51,5 +55,4 @@ endif()
 include(FreeRTOS_Kernel_import.cmake)
 
 # Add subdirectories
-add_subdirectory(include/pca9685)  # ✅ Only here
 add_subdirectory(src)
