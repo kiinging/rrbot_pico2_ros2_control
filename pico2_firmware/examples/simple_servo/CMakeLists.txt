@@ -42,6 +42,6 @@ target_link_libraries(servo_align
     pca9685  # Reuse the same library
 )
 
-pico_enable_stdio_usb(servo_align 0)
-pico_enable_stdio_uart(servo_align 1)
+pico_enable_stdio_usb(servo_align 1)
+pico_enable_stdio_uart(servo_align 0)
 pico_add_extra_outputs(servo_align)

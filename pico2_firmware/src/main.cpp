@@ -33,7 +33,7 @@ TaskHandle_t gMoveServotask = nullptr;
 
 
 // === Servo Controller and Servos ===
-PCA9685_servo_driver myController(i2c1, 6, 7, 0x40);
+PCA9685_servo_driver myController(i2c0, 8, 9, 0x40);
 
 std::vector<PCA9685_servo> myServos = {
     PCA9685_servo(&myController, 0, 100, 540),
@@ -159,8 +159,8 @@ void receiveTask(__unused void *param)
         std::getline(std::cin, msg);  // Receive message
 
         size_t last = 0;
-        size_t next = msg.find(" ", last);
-        std::string mode = msg.substr(last, next - last);
+        size_t next = msg.find(" ", last);   // finds the first space
+        std::string mode = msg.substr(last, next - last); // get the first word: "m" or "e"
 
         last = next + 1;
         next = msg.find(" ", last);

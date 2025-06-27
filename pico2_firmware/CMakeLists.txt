@@ -54,5 +54,9 @@ endif()
 
 include(FreeRTOS_Kernel_import.cmake)
 
+# Add libraries
+add_subdirectory(lib/pca9685)  
+
+
 # Add subdirectories
 add_subdirectory(src)
