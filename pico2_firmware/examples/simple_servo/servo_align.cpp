@@ -70,7 +70,7 @@ int main(void) {
     int i = 0;
     for (auto& servo : myServo) {
         init_servo(servo, MODE_SCONSTANT, -90, 90, 0, i++, 1000000);  // Set to 0°
-        servo.setAngularVelocity(90); // degrees per second
+        servo.setAngularVelocity(50); // degrees per second
     }
 
     sleep_ms(3000);

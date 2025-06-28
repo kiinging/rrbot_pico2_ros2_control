@@ -25,8 +25,6 @@
 #include <PCA9685_servo.h>
 
 // === Globals ===
-std::string msg{};
-
 TaskHandle_t gLEDtask = nullptr;
 TaskHandle_t gReceivetask = nullptr;
 TaskHandle_t gMoveServotask = nullptr;
@@ -46,6 +44,11 @@ uint64_t TNow = 0;
 uint64_t TPrevious = 0;
 uint64_t TEllapsed = 0;
 
+// Input buffer
+std::string input_line;
+std::string msg;
+
+
 constexpr int RECEIVE_DELAY_MS = 3;
 
 // === Servo Initialization Helper ===
@@ -58,6 +61,13 @@ void init_servo(PCA9685_servo& servo, uint8_t mode, int16_t minRange,
     servo.setPosition(position);  // Move to mid-point
     servo.setAddress(address);
     servo.setTConstantDuration(TConstDur);
+}
+
+void reset_all_servos_to_zero() {
+    for (auto& servo : myServos) {
+        servo.setPosition(0);
+    }
+    printf("Reset: All servos set to 0° (0 radians).\n");
 }
 
 // Which core to run on if configNUMBER_OF_CORES==1
@@ -140,52 +150,69 @@ void  HeartbeatLEDTask(__unused void *params) {
 #endif // USE_LED
 
 
+
 void receiveTask(__unused void *param)
 {
     int delay = *static_cast<int*>(param);
 
-    // static int last_core_id = -1;  
-    // int count = 0;
-  
+    printf("USB connected. 3-Servo Control Initialized.\n");
+    printf("Usage:\n");
+    printf("  m <servo> <angle_in_radians> → Move servo to absolute position.\n");
+    printf("  e <servo> → Echo current position in radians.\n");
+    printf("  r → Reset all servos to 0°.\n\n");
+
+
     while (true) {
-//         last_core_id = portGET_CORE_ID();
-// #if configNUMBER_OF_CORES > 1        
-//         if (portGET_CORE_ID() != last_core_id) {
-//             printf("receive task first print is on core %d\n", last_core_id);
-//         }
-// #endif        
-//         printf("Receive task count=%u on core %d\n", count++, last_core_id);
+        int ch = getchar_timeout_us(0);  // Non-blocking input
+        if (ch != PICO_ERROR_TIMEOUT) {
+            if (ch == '\n' || ch == '\r') {
+                if (!input_line.empty()) {
+                    msg = input_line;
+                    input_line.clear();
 
-        std::getline(std::cin, msg);  // Receive message
+                    size_t last = 0;
+                    size_t next = msg.find(" ");
+                    std::string mode = msg.substr(last, next - last);
 
-        size_t last = 0;
-        size_t next = msg.find(" ", last);   // finds the first space
-        std::string mode = msg.substr(last, next - last); // get the first word: "m" or "e"
+                    if (mode == "e") {
+                        last = next + 1;
+                        int nservo = std::stoi(msg.substr(last));
+                        if (nservo >= 0 && static_cast<size_t>(nservo) < myServos.size()) {
+                            float angle_rad = myServos[nservo].getPosition() * 3.14159f / 180.0f;
+                            printf("Servo %d = %.4f radians\r\n", nservo, angle_rad);
+                        }
 
-        last = next + 1;
-        next = msg.find(" ", last);
+                    } else if (mode == "m") {
+                        last = next + 1;
+                        next = msg.find(" ", last);
+                        int nservo = std::stoi(msg.substr(last, next - last));
 
-        if (mode == "e") {
-            int nservo = std::stoi(msg.substr(last, next - last));
-            if (nservo >= 0 && static_cast<size_t>(nservo) < myServos.size()) {
-                float angle_rad = myServos[nservo].getPosition() * 3.14159f / 180.0f;
-                std::cout << nservo << " " << angle_rad << " \r\n";
-            }
+                        last = next + 1;
+                        double angle_rad = std::stod(msg.substr(last));
+                        int angle_deg = static_cast<int>(angle_rad * 180.0 / 3.14159);
 
-        } else if (mode == "m") {
-            int nservo = std::stoi(msg.substr(last, next - last));
-            last = next + 1;
-            next = msg.find(" ", last);
-            double angle_rad = std::stod(msg.substr(last, next - last));
-            int angle_deg = static_cast<int>(angle_rad * 180.0 / 3.14159);
+                        if (nservo >= 0 && static_cast<size_t>(nservo) < myServos.size()) {
+                            myServos[nservo].setPosition(angle_deg);
+                            printf("Moving servo %d to %d degrees (%.2f rad)\r\n",
+                                   nservo, angle_deg, angle_rad);
+                        }
 
-            if (nservo >= 0 && static_cast<size_t>(nservo) < myServos.size()) {
-                myServos[nservo].setPosition(angle_deg);
+                    } else if (mode == "r") {
+                        reset_all_servos_to_zero();
+                    } else {
+                        printf("Unknown command: %s\r\n", mode.c_str());
+                    }
+                }
+            } else {
+                input_line += static_cast<char>(ch);
             }
         }
-        vTaskDelay(pdMS_TO_TICKS(delay));
+
+        vTaskDelay(pdMS_TO_TICKS(delay)); // maintain cooperative multitasking
     }
 }
+
+
 
 void servoLoopTask(void *param)
 {
@@ -200,6 +227,15 @@ void servoLoopTask(void *param)
         vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
+
+void init_all_servos() {
+    int i = 0;
+    for (auto& servo : myServos) {
+        init_servo(servo, MODE_SCONSTANT, -90, 90, 0, i++, 1000000);
+        servo.setAngularVelocity(50);
+    }
+}
+
 
 void vLaunch( void) {
 // #if configUSE_CORE_AFFINITY && configNUMBER_OF_CORES > 1
@@ -223,6 +259,13 @@ int main( void )
 {
     stdio_init_all();
 
+    myController.begin(100000); // initialize I2C
+
+    while (!stdio_usb_connected()) {
+        sleep_ms(100);
+    }
+
+
     /* Configure the hardware ready to run the demo. */
     const char *rtos_name;
 #if (configNUMBER_OF_CORES > 1)
@@ -230,6 +273,8 @@ int main( void )
 #else
     rtos_name = "FreeRTOS";
 #endif
+
+    init_all_servos();
 
 #if (configNUMBER_OF_CORES > 1)
     printf("Starting %s on both cores:\n", rtos_name);
