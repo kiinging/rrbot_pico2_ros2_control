@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="rrbot" params="parent prefix *origin">
+
+  <!-- Constants -->
+  <xacro:property name="mass" value="1"/>
+  <xacro:property name="width" value="0.01"/>
+  <xacro:property name="length" value="0.02"/>
+  <xacro:property name="baselink_diameter" value="0.10"/>
+  <xacro:property name="rotator_diameter" value="0.06"/>
+  <xacro:property name="height1" value="0.06"/>
+  <xacro:property name="height2" value="0.15"/>
+  <xacro:property name="height3" value="0.15"/>
+  <xacro:property name="axel_offset" value="0.01"/>
+  <xacro:property name="shaft_offset" value="0.005"/>
+
+  <!-- Base Joint -->
+  <joint name="${prefix}base_joint" type="fixed">
+    <xacro:insert_block name="origin"/>
+    <parent link="${parent}"/>
+    <child link="${prefix}base_link"/>
+  </joint>
+
+  <!-- Base Link -->
+  <link name="${prefix}base_link">
+    <visual>
+      <origin xyz="0 0 ${height1/2}"/>
+      <geometry>
+        <cylinder radius="${baselink_diameter/2}" length="${height1}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <!-- Rotator Joint -->
+  <joint name="${prefix}base_to_rotator_joint" type="revolute">
+    <origin xyz="0 0 ${height1 + shaft_offset}" rpy="0 0 1.5708"/>
+    <parent link="${prefix}base_link"/>
+    <child link="${prefix}rotator_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
+  </joint>
+
+  <!-- Rotator Link -->
+  <link name="${prefix}rotator_link">
+    <visual>
+      <origin xyz="0 0 0.005"/>
+      <geometry>
+        <cylinder radius="${rotator_diameter/2}" length="0.01"/>
+      </geometry>
+      <material name="blue"/>
+    </visual>
+  </link>
+
+  <!-- Joint 1 -->
+  <joint name="${prefix}joint1" type="revolute">
+    <origin xyz="0 ${width} ${0.01 + axel_offset}"/>
+    <parent link="${prefix}rotator_link"/>
+    <child link="${prefix}link1"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
+  </joint>
+
+  <!-- Link 1 -->
+  <link name="${prefix}link1">
+    <visual>
+      <origin xyz="0 0 ${height2/2 - axel_offset}"/>
+      <geometry>
+        <box size="${length} ${width} ${height2}"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+  </link>
+
+  <!-- Joint 2 -->
+  <joint name="${prefix}joint2" type="revolute">
+    <origin xyz="0 ${width} ${height2 - axel_offset*2}"/>
+    <parent link="${prefix}link1"/>
+    <child link="${prefix}link2"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
+  </joint>
+
+  <!-- Link 2 -->
+  <link name="${prefix}link2">
+    <visual>
+      <origin xyz="0 0 ${height3/2 - axel_offset}"/>
+      <geometry>
+        <box size="${length} ${width} ${height3}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+  </link>
+
+  <!-- Tool Joint -->
+  <joint name="${prefix}tool_joint" type="fixed">
+    <origin xyz="0 0 ${height3 - axel_offset}"/>
+    <parent link="${prefix}link2"/>
+    <child link="${prefix}tool_link"/>
+  </joint>
+
+  <!-- Tool Link -->
+  <link name="${prefix}tool_link"/>
+
+  </xacro:macro>
+</robot>

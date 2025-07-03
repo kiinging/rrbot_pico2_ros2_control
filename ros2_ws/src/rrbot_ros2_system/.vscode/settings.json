@@ -1,0 +1,30 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/pizza/ros2_projects/ros2_ws/build/rqt_joint_trajectory_controller",
+        "/home/pizza/ros2_projects/ros2_ws/install/rqt_joint_trajectory_controller/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/build/rqt_controller_manager",
+        "/home/pizza/ros2_projects/ros2_ws/install/rqt_controller_manager/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/build/ros2controlcli",
+        "/home/pizza/ros2_projects/ros2_ws/install/ros2controlcli/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/build/ros2_controllers_test_nodes",
+        "/home/pizza/ros2_projects/ros2_ws/install/ros2_controllers_test_nodes/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/install/controller_manager/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/install/controller_manager_msgs/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/install/control_msgs/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/pizza/ros2_projects/ros2_ws/build/rqt_joint_trajectory_controller",
+        "/home/pizza/ros2_projects/ros2_ws/install/rqt_joint_trajectory_controller/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/build/rqt_controller_manager",
+        "/home/pizza/ros2_projects/ros2_ws/install/rqt_controller_manager/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/build/ros2controlcli",
+        "/home/pizza/ros2_projects/ros2_ws/install/ros2controlcli/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/build/ros2_controllers_test_nodes",
+        "/home/pizza/ros2_projects/ros2_ws/install/ros2_controllers_test_nodes/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/install/controller_manager/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/install/controller_manager_msgs/lib/python3.12/site-packages",
+        "/home/pizza/ros2_projects/ros2_ws/install/control_msgs/lib/python3.12/site-packages",
+        "/opt/ros/jazzy/lib/python3.12/site-packages"
+    ]
+}
