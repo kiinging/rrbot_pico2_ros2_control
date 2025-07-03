@@ -1,9 +1,0 @@
-<library path="rrbot_ros2_system">
-  <class name="rrbot_ros2_system/ServoBotSystemPositionOnlyHardware"
-         type="rrbot_ros2_system::ServoBotSystemPositionOnlyHardware"
-         base_class_type="hardware_interface::SystemInterface">
-    <description>
-      The ros2_control ServoBot example using a system hardware interface-type.
-    </description>
-  </class>
-</library>
