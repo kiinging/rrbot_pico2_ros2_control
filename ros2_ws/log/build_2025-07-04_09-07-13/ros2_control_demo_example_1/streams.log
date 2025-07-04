@@ -1,0 +1,20 @@
+[0.020s] Invoking command in '/home/pizza/ros2_projects/rrbot_pico2_ros2_control/ros2_ws/build/ros2_control_demo_example_1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/pizza/ros2_projects/rrbot_pico2_ros2_control/ros2_ws/src/rrbot_ros2_system -DCMAKE_INSTALL_PREFIX=/home/pizza/ros2_projects/rrbot_pico2_ros2_control/ros2_ws/install/ros2_control_demo_example_1
+[0.109s] [31mCMake Error at CMakeLists.txt:4 (find_package):
+[0.109s]   By not providing "Findros2_control_cmake.cmake" in CMAKE_MODULE_PATH this
+[0.109s]   project has asked CMake to find a package configuration file provided by
+[0.109s]   "ros2_control_cmake", but CMake did not find one.
+[0.109s] 
+[0.110s]   Could not find a package configuration file provided by
+[0.110s]   "ros2_control_cmake" with any of the following names:
+[0.110s] 
+[0.110s]     ros2_control_cmakeConfig.cmake
+[0.110s]     ros2_control_cmake-config.cmake
+[0.110s] 
+[0.110s]   Add the installation prefix of "ros2_control_cmake" to CMAKE_PREFIX_PATH or
+[0.110s]   set "ros2_control_cmake_DIR" to a directory containing one of the above
+[0.110s]   files.  If "ros2_control_cmake" provides a separate development package or
+[0.110s]   SDK, be sure it has been installed.
+[0.110s] 
+[0.111s] [0m
+[0.111s] -- Configuring incomplete, errors occurred!
+[0.115s] Invoked command in '/home/pizza/ros2_projects/rrbot_pico2_ros2_control/ros2_ws/build/ros2_control_demo_example_1' returned '1': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com /usr/bin/cmake /home/pizza/ros2_projects/rrbot_pico2_ros2_control/ros2_ws/src/rrbot_ros2_system -DCMAKE_INSTALL_PREFIX=/home/pizza/ros2_projects/rrbot_pico2_ros2_control/ros2_ws/install/ros2_control_demo_example_1
