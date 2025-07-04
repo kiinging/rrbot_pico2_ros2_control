@@ -1,0 +1,34 @@
+# Ignore everything by default
+/*
+
+
+# Allow root-level important files
+!/.gitignore
+!/README.md
+
+# Allow only these directories
+!/pico2_firmware/
+!/ros2_ws/
+
+# Un-ignore nested source directory
+!/ros2_ws/src/
+!/ros2_ws/src/ros2_control_cmake/
+!/ros2_ws/src/ros2_control_cmake/**
+
+# Inside allowed folders, ignore build artifacts
+pico2_firmware/build/
+pico2_firmware/log/
+
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+
+# Ignore common backup/temp files
+*.swp
+*.swo
+*.bak
+*.tmp
+*.pyc
+__pycache__/
+
