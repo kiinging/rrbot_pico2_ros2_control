@@ -63,6 +63,8 @@ private:
   std::vector<double> joint_positions_;
   std::vector<double> joint_commands_;
 
+  std::vector<int> joint_to_servo_map = {0, 2, 1};
+
   SerialDriver _serial_driver;  // ✅ Add this line
 
 };

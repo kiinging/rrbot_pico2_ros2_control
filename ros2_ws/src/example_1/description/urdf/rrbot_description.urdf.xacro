@@ -33,17 +33,17 @@
     </visual>
   </link>
 
-  <!-- Rotator Joint -->
-  <joint name="${prefix}base_to_rotator_joint" type="revolute">
+  <!-- Joint1-->
+  <joint name="${prefix}joint1" type="revolute">
     <origin xyz="0 0 ${height1 + shaft_offset}" rpy="0 0 1.5708"/>
     <parent link="${prefix}base_link"/>
-    <child link="${prefix}rotator_link"/>
+    <child link="${prefix}link1"/>
     <axis xyz="0 0 1"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
 
-  <!-- Rotator Link -->
-  <link name="${prefix}rotator_link">
+  <!-- Link1 -->
+  <link name="${prefix}link1">
     <visual>
       <origin xyz="0 0 0.005"/>
       <geometry>
@@ -53,17 +53,17 @@
     </visual>
   </link>
 
-  <!-- Joint 1 -->
-  <joint name="${prefix}joint1" type="revolute">
+  <!-- Joint2 -->
+  <joint name="${prefix}joint2" type="revolute">
     <origin xyz="0 ${width} ${0.01 + axel_offset}"/>
-    <parent link="${prefix}rotator_link"/>
-    <child link="${prefix}link1"/>
+    <parent link="${prefix}link1"/>
+    <child link="${prefix}link2"/>
     <axis xyz="0 1 0"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
 
-  <!-- Link 1 -->
-  <link name="${prefix}link1">
+  <!-- Link2 -->
+  <link name="${prefix}link2">
     <visual>
       <origin xyz="0 0 ${height2/2 - axel_offset}"/>
       <geometry>
@@ -73,17 +73,17 @@
     </visual>
   </link>
 
-  <!-- Joint 2 -->
-  <joint name="${prefix}joint2" type="revolute">
+  <!-- Joint3 -->
+  <joint name="${prefix}joint3" type="revolute">
     <origin xyz="0 ${width} ${height2 - axel_offset*2}"/>
-    <parent link="${prefix}link1"/>
-    <child link="${prefix}link2"/>
+    <parent link="${prefix}link2"/>
+    <child link="${prefix}link3"/>
     <axis xyz="0 1 0"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
 
-  <!-- Link 2 -->
-  <link name="${prefix}link2">
+  <!-- Link3 -->
+  <link name="${prefix}link3">
     <visual>
       <origin xyz="0 0 ${height3/2 - axel_offset}"/>
       <geometry>
@@ -93,15 +93,15 @@
     </visual>
   </link>
 
-  <!-- Tool Joint -->
-  <joint name="${prefix}tool_joint" type="fixed">
+  <!-- Joint4 -->
+  <joint name="${prefix}joint4" type="fixed">
     <origin xyz="0 0 ${height3 - axel_offset}"/>
-    <parent link="${prefix}link2"/>
-    <child link="${prefix}tool_link"/>
+    <parent link="${prefix}link3"/>
+    <child link="${prefix}link4"/>
   </joint>
 
-  <!-- Tool Link -->
-  <link name="${prefix}tool_link"/>
+  <!-- Link4 -->
+  <link name="${prefix}link4"/>
 
   </xacro:macro>
 </robot>

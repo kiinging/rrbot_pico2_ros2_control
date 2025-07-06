@@ -3,9 +3,9 @@ joint_trajectory_position_controller:
     type: joint_trajectory_controller/JointTrajectoryController
 
     joints:
-      - base_to_rotator_joint
       - joint1
       - joint2
+      - joint3
 
     command_interfaces:
       - position
@@ -21,5 +21,4 @@ joint_trajectory_position_controller:
     constraints:
       stopped_velocity_tolerance: 0.01 # Defaults to 0.01
       goal_time: 0.0 # Defaults to 0.0 (start immediately)
-
 

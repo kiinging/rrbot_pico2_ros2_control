@@ -138,12 +138,26 @@ RRBotSystemPositionOnlyHardware::export_command_interfaces()
 hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_activate(
   const rclcpp_lifecycle::State & /*previous_state*/)
 {
-  while(!_serial_driver.connected())
+  RCLCPP_INFO(
+    rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Trying to connect to serial...");
+
+  bool success = false;
+  for (int attempts = 0; attempts < 5 && !success; ++attempts)
   {
-    RCLCPP_INFO(
-      rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Connecting to serial...");
-    _serial_driver.configure("/dev/ttyACM0", 115200, 20);
-    rclcpp::sleep_for(std::chrono::seconds(1));
+    success = _serial_driver.configure("/dev/ttyACM0", 115200, 20);
+    if (!success)
+    {
+      RCLCPP_WARN(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+                  "Attempt %d: Failed to open serial port, retrying...", attempts + 1);
+      rclcpp::sleep_for(std::chrono::seconds(1));
+    }
+  }
+
+  if (!success)
+  {
+    RCLCPP_ERROR(rclcpp::get_logger("RRBotSystemPositionOnlyHardware"),
+                 "Failed to open serial port after multiple attempts.");
+    return hardware_interface::CallbackReturn::ERROR;
   }
 
   // command and state should be equal when starting
@@ -156,6 +170,10 @@ hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_activate(
 
   return hardware_interface::CallbackReturn::SUCCESS;
 }
+
+
+
+
 
 hardware_interface::CallbackReturn RRBotSystemPositionOnlyHardware::on_deactivate(
   const rclcpp_lifecycle::State & /*previous_state*/)
@@ -171,9 +189,9 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
 {
   for (uint i = 0; i < joint_positions_.size(); i++)
   {
-    auto [nservo, angle] = _serial_driver.getServoState(i);
-
-    joint_positions_.at(nservo) = angle;
+    int servo_id = joint_to_servo_map[i];
+    auto [_, angle] = _serial_driver.getServoState(servo_id);
+    joint_positions_[i] = angle;
 
     RCLCPP_INFO(
       rclcpp::get_logger("RRBotSystemPositionOnlyHardware"), "Got state %.5f for joint %d!",
@@ -183,6 +201,8 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::read(
 
   return hardware_interface::return_type::OK;
 }
+
+
 
 hardware_interface::return_type RRBotSystemPositionOnlyHardware::write(
   const rclcpp::Time & /*time*/, const rclcpp::Duration & /*period*/)
@@ -195,9 +215,10 @@ hardware_interface::return_type RRBotSystemPositionOnlyHardware::write(
       joint_commands_[i], i);
 
     // Send command to the Pico
+    int servo_id = joint_to_servo_map[i];
     std::string cmd{"m "};
-    cmd += std::to_string(i) + " ";
-    cmd += std::to_string(joint_commands_.at(i)) + "\n";
+    cmd += std::to_string(servo_id) + " ";
+    cmd += std::to_string(joint_commands_[i]) + "\n";
     _serial_driver.writeLine(cmd);
   }
 

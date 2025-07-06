@@ -10,7 +10,7 @@ forward_position_controller:
   ros__parameters:
     type: forward_command_controller/ForwardCommandController
     joints:
-      - base_to_rotator_joint
       - joint1
       - joint2
+      - joint3
     interface_name: position

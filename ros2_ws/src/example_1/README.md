@@ -10,6 +10,8 @@ Find the documentation in [doc/userdoc.rst](doc/userdoc.rst) or on [control.ros.
 
 
 ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
-- 0.5
-- 0.5
-- -0.5"
+- 1.0
+- 1.0
+- 1.0"
+
+🍕💻💪
