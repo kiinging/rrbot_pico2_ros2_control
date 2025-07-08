@@ -9,99 +9,171 @@
   <xacro:property name="length" value="0.02"/>
   <xacro:property name="baselink_diameter" value="0.10"/>
   <xacro:property name="rotator_diameter" value="0.06"/>
-  <xacro:property name="height1" value="0.06"/>
+  <xacro:property name="height_base" value="0.06"/>
+  <xacro:property name="height1" value="0.03"/>
   <xacro:property name="height2" value="0.15"/>
   <xacro:property name="height3" value="0.15"/>
   <xacro:property name="axel_offset" value="0.01"/>
   <xacro:property name="shaft_offset" value="0.005"/>
 
-  <!-- Base Joint -->
+ <!-- Base Joint -->
   <joint name="${prefix}base_joint" type="fixed">
-    <xacro:insert_block name="origin"/>
+    <xacro:insert_block name="origin" />
     <parent link="${parent}"/>
-    <child link="${prefix}base_link"/>
+    <child link="${prefix}base_link" />
   </joint>
 
   <!-- Base Link -->
   <link name="${prefix}base_link">
-    <visual>
-      <origin xyz="0 0 ${height1/2}"/>
+    <collision>
+      <origin xyz="0 0 ${height_base/2}" rpy="0 0 0"/>
       <geometry>
-        <cylinder radius="${baselink_diameter/2}" length="${height1}"/>
+        <cylinder radius="${baselink_diameter/2}" length="${height_base}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 ${height_base/2}" rpy="0 0 0"/>
+      <geometry>
+        <!-- <box size="${width} ${width} ${height_base}"/> -->
+        <cylinder radius="${baselink_diameter/2}" length="${height_base}"/>
       </geometry>
       <material name="orange"/>
     </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height_base/2}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass * (3 * pow(baselink_diameter/2, 2) + pow(height_base, 2)) / 12.0}"
+        iyy="${mass * (3 * pow(baselink_diameter/2, 2) + pow(height_base, 2)) / 12.0}"
+        izz="${mass * pow(baselink_diameter/2, 2) / 2.0}"
+        ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
   </link>
 
   <!-- Joint1-->
   <joint name="${prefix}joint1" type="revolute">
-    <origin xyz="0 0 ${height1 + shaft_offset}" rpy="0 0 1.5708"/>
+    <origin xyz="0 0 ${height_base + shaft_offset}" rpy="0 0 1.5708"/>
     <parent link="${prefix}base_link"/>
     <child link="${prefix}link1"/>
     <axis xyz="0 0 1"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
 
-  <!-- Link1 -->
+    <!-- Link1 -->
   <link name="${prefix}link1">
+    <collision>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="${rotator_diameter/2}" length="0.01"/>
+      </geometry>
+    </collision>
     <visual>
-      <origin xyz="0 0 0.005"/>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
       <geometry>
         <cylinder radius="${rotator_diameter/2}" length="0.01"/>
       </geometry>
       <material name="blue"/>
     </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass * (3 * pow(rotator_diameter/2, 2) + pow(height_base, 2)) / 12.0}"
+        iyy="${mass * (3 * pow(rotator_diameter/2, 2) + pow(height_base, 2)) / 12.0}"
+        izz="${mass * pow(rotator_diameter/2, 2) / 2.0}"
+        ixy="0.0" ixz="0.0" iyz="0.0"/>
+    </inertial>
   </link>
 
-  <!-- Joint2 -->
+  <!-- Joint2-->
   <joint name="${prefix}joint2" type="revolute">
     <origin xyz="0 ${width} ${0.01 + axel_offset}"/>
     <parent link="${prefix}link1"/>
-    <child link="${prefix}link2"/>
+    <child link="${prefix}link2"/>    
     <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
 
   <!-- Link2 -->
   <link name="${prefix}link2">
+    <collision>
+      <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${length} ${width} ${height2}"/>
+      </geometry>
+    </collision>
+
     <visual>
-      <origin xyz="0 0 ${height2/2 - axel_offset}"/>
+      <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
       <geometry>
         <box size="${length} ${width} ${height2}"/>
       </geometry>
       <material name="yellow"/>
     </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass / 12.0 * (width*width + height2*height2)}" ixy="0.0" ixz="0.0"
+        iyy="${mass / 12.0 * (height2*height2 + width*width)}" iyz="0.0"
+        izz="${mass / 12.0 * (width*width + width*width)}"/>
+    </inertial>
   </link>
 
   <!-- Joint3 -->
   <joint name="${prefix}joint3" type="revolute">
-    <origin xyz="0 ${width} ${height2 - axel_offset*2}"/>
     <parent link="${prefix}link2"/>
     <child link="${prefix}link3"/>
+    <origin xyz="0 ${width} ${height2 - axel_offset*2}" rpy="0 0 0"/>
     <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
 
   <!-- Link3 -->
   <link name="${prefix}link3">
+    <collision>
+      <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${length} ${width} ${height3}"/>
+      </geometry>
+    </collision>
     <visual>
-      <origin xyz="0 0 ${height3/2 - axel_offset}"/>
+      <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
       <geometry>
         <box size="${length} ${width} ${height3}"/>
       </geometry>
       <material name="orange"/>
     </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+        ixx="${mass / 12.0 * (width*width + height3*height3)}" ixy="0.0" ixz="0.0"
+        iyy="${mass / 12.0 * (height3*height3 + width*width)}" iyz="0.0"
+        izz="${mass / 12.0 * (width*width + width*width)}"/>
+    </inertial>
   </link>
+
+
 
   <!-- Joint4 -->
   <joint name="${prefix}joint4" type="fixed">
     <origin xyz="0 0 ${height3 - axel_offset}"/>
     <parent link="${prefix}link3"/>
-    <child link="${prefix}link4"/>
+    <child link="${prefix}link4" />
   </joint>
 
-  <!-- Link4 -->
-  <link name="${prefix}link4"/>
+    <!-- Link4 -->
+  <link name="${prefix}link4">
+  </link>
 
   </xacro:macro>
+
 </robot>

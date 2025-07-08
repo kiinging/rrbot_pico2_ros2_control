@@ -27,8 +27,6 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "ros2_control_demo_example_1/serial_driver.h" 
-
 namespace ros2_control_demo_example_1
 {
 class RRBotSystemPositionOnlyHardware : public hardware_interface::SystemInterface
@@ -41,10 +39,6 @@ public:
 
   hardware_interface::CallbackReturn on_configure(
     const rclcpp_lifecycle::State & previous_state) override;
-
-  std::vector<hardware_interface::StateInterface> export_state_interfaces() override;
-
-  std::vector<hardware_interface::CommandInterface> export_command_interfaces() override;
 
   hardware_interface::CallbackReturn on_activate(
     const rclcpp_lifecycle::State & previous_state) override;
@@ -59,14 +53,10 @@ public:
     const rclcpp::Time & time, const rclcpp::Duration & period) override;
 
 private:
- // Store the command for the simulated robot
-  std::vector<double> joint_positions_;
-  std::vector<double> joint_commands_;
-
-  std::vector<int> joint_to_servo_map = {0, 2, 1};
-
-  SerialDriver _serial_driver;  // ✅ Add this line
-
+  // Parameters for the RRBot simulation
+  double hw_start_sec_;
+  double hw_stop_sec_;
+  double hw_slowdown_;
 };
 
 }  // namespace ros2_control_demo_example_1

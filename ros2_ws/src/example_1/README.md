@@ -4,14 +4,14 @@
 
 Find the documentation in [doc/userdoc.rst](doc/userdoc.rst) or on [control.ros.org](https://control.ros.org/master/doc/ros2_control_demos/example_1/doc/userdoc.html).
 
-
-# usefull commmands,
-
+# useful commands
+ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
+- 1.5
+- 0.9
+- -1.5"
 
 
 ros2 topic pub /forward_position_controller/commands std_msgs/msg/Float64MultiArray "data:
-- 1.0
-- 1.0
-- 1.0"
-
-🍕💻💪
+- 0.0
+- 0.0
+- 0.0"

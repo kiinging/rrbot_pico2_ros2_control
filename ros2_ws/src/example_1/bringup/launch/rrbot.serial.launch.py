@@ -46,7 +46,7 @@ def generate_launch_description():
                 [
                     FindPackageShare("ros2_control_demo_example_1"),
                     "urdf",
-                    "rrbot.urdf.xacro",
+                    "rrbot.serial.urdf.xacro",
                 ]
             ),
         ]
