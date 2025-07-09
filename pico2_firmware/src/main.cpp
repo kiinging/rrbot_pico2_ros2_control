@@ -28,7 +28,7 @@
 TaskHandle_t gLEDtask = nullptr;
 TaskHandle_t gReceivetask = nullptr;
 TaskHandle_t gMoveServotask = nullptr;
-
+TaskHandle_t gPublisherTask = nullptr;
 
 // === Servo Controller and Servos ===
 PCA9685_servo_driver myController(i2c0, 8, 9, 0x40);
@@ -70,6 +70,7 @@ void reset_all_servos_to_zero() {
 //    printf("Reset: All servos set to 0° (0 radians).\n");
 }
 
+
 // Which core to run on if configNUMBER_OF_CORES==1
 #ifndef RUN_FREE_RTOS_ON_CORE
 #define RUN_FREE_RTOS_ON_CORE 0
@@ -89,14 +90,16 @@ void reset_all_servos_to_zero() {
 #define LED_DELAY_MS 500
 
 // Priorities of our threads - higher numbers are higher priority
-#define BLINK_TASK_PRIORITY     ( tskIDLE_PRIORITY + 1UL )
-#define RECEIVE_TASK_PRIORITY      ( tskIDLE_PRIORITY + 2UL )
-#define SERVO_TASK_PRIORITY    ( tskIDLE_PRIORITY + 4UL )
+#define BLINK_TASK_PRIORITY      ( tskIDLE_PRIORITY + 1UL )
+#define RECEIVE_TASK_PRIORITY    ( tskIDLE_PRIORITY + 3UL )
+#define PUBLISH_TASK_PRIORITY    ( tskIDLE_PRIORITY + 2UL )
+#define SERVO_TASK_PRIORITY      ( tskIDLE_PRIORITY + 4UL )
 
 // Stack sizes of our threads in words (4 bytes)
 #define BLINK_TASK_STACK_SIZE configMINIMAL_STACK_SIZE
 #define RECEIVE_TASK_STACK_SIZE configMINIMAL_STACK_SIZE * 2
 #define SERVO_TASK_STACK_SIZE configMINIMAL_STACK_SIZE * 2
+#define PUBLISH_TASK_STACK_SIZE configMINIMAL_STACK_SIZE * 2
 
 
 #if USE_LED
@@ -149,6 +152,20 @@ void  HeartbeatLEDTask(__unused void *params) {
 }
 #endif // USE_LED
 
+void publisherTask(__unused void *param)
+{
+    const int publish_delay_ms = 100;  // adjust as needed (10 Hz here)
+
+    while (true) {
+        for (size_t i = 0; i < myServos.size(); ++i) {
+            float angle_deg = myServos[i].getPosition();
+            float angle_rad = angle_deg * 3.14159f / 180.0f;
+            printf("j %zu %.4f\r\n", i, angle_rad);  // format: j <index> <radians>
+        }
+
+        vTaskDelay(pdMS_TO_TICKS(publish_delay_ms));
+    }
+}
 
 
 void receiveTask(__unused void *param)
@@ -212,8 +229,6 @@ void receiveTask(__unused void *param)
     }
 }
 
-
-
 void servoLoopTask(void *param)
 {
     while (true) {
@@ -250,6 +265,10 @@ void vLaunch( void) {
 
     // Create servo control loop task
     xTaskCreate(servoLoopTask, "ServoThread", SERVO_TASK_STACK_SIZE, nullptr, SERVO_TASK_PRIORITY , &gMoveServotask);
+
+
+    xTaskCreate(publisherTask, "PublisherThread", PUBLISH_TASK_STACK_SIZE, nullptr, PUBLISH_TASK_PRIORITY, &gPublisherTask);  // <- New Task
+
 
     // Start FreeRTOS
     vTaskStartScheduler();

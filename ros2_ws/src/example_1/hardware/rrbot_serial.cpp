@@ -66,9 +66,32 @@ hardware_interface::CallbackReturn RealRRBotSerialHardware::on_deactivate(
 hardware_interface::return_type RealRRBotSerialHardware::read(
   const rclcpp::Time &, const rclcpp::Duration &)
 {
-  // (Optional) Query angles from Pico using "e <i>" commands
+  try {
+    // Read all available serial lines
+    while (serial_port_.available()) {
+      std::string line = serial_port_.readline(100, "\n");
+
+      // Example: "j 0 1.5708"
+      if (line.rfind("j", 0) == 0) {  // starts with 'j'
+        std::istringstream iss(line);
+        std::string tag;
+        int index;
+        double value;
+        iss >> tag >> index >> value;
+
+        if (iss && tag == "j" && index >= 0 && index < static_cast<int>(hw_positions_.size())) {
+          hw_positions_[index] = value;
+        }
+      }
+    }
+  } catch (const std::exception & e) {
+    RCLCPP_WARN(rclcpp::get_logger("RealRRBotSerialHardware"), "Serial read failed: %s", e.what());
+    return hardware_interface::return_type::ERROR;
+  }
+
   return hardware_interface::return_type::OK;
 }
+
 
 hardware_interface::return_type RealRRBotSerialHardware::write(
   const rclcpp::Time &, const rclcpp::Duration &)
