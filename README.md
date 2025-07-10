@@ -2,7 +2,7 @@
 
 This repository enables control of a **3-joint robotic arm** using:
 
-- **Raspberry Pi Pico 2 (RP2040)** for low-level firmware
+- **Raspberry Pi Pico 2 (RP2350)** for low-level firmware
 - **ROS 2** (e.g., Jazzy) running on an SBC like Orange Pi 5 Max
 
 ---
@@ -10,7 +10,7 @@ This repository enables control of a **3-joint robotic arm** using:
 ## 🧩 Key Components
 
 ### 🔧 `pico2_firmware/`
-Firmware written in C++ for the RP2040 to drive servos using a PCA9685 over I2C. The microcontroller communicates with the ROS 2 stack over serial using a lightweight text-based protocol.
+Firmware written in C++ for the RP2350 to drive servos using a PCA9685 over I2C. The microcontroller communicates with the ROS 2 stack over serial using a lightweight text-based protocol.
 
 ### 🌐 `ros2_ws/src/example_1/`
 ROS 2 packages using `ros2_control` framework. Includes hardware interface implementations and launch files for both simulation and real hardware.

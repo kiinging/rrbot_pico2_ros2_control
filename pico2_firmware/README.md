@@ -1,6 +1,6 @@
-# 🔧 pico2_firmware — RP2040 Servo Control
+# 🔧 pico2_firmware — RP2350 Servo Control
 
-This firmware enables the **Raspberry Pi Pico 2 (RP2040)** to control servo motors using a **PCA9685 PWM driver**, communicating via serial UART with a host running ROS 2.
+This firmware enables the **Raspberry Pi Pico 2 (RP2350)** to control servo motors using a **PCA9685 PWM driver**, communicating via serial UART with a host running ROS 2.
 
 ---
 
@@ -9,7 +9,7 @@ This firmware enables the **Raspberry Pi Pico 2 (RP2040)** to control servo moto
 - UART command parser for ROS 2 integration
 - Joint position feedback via serial
 - Lightweight driver for Adafruit PCA9685 PWM chip
-- Built with the official RP2040 C/C++ SDK
+- Built with the official RP2350 C/C++ SDK
 
 ---
 
@@ -66,7 +66,7 @@ This generates:
 ### 🔍 Flash via OpenOCD (optional)
 
 ```bash
-sudo openocd -f interface/cmsis-dap.cfg -f target/rp2040.cfg \
+sudo openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg \
   -c "adapter speed 5000" \
   -c "program servo_driver.elf verify reset exit"
 ```

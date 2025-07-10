@@ -7,7 +7,7 @@ This example demonstrates the **RRBot** (Revolute-Revolute Robot) controlled via
 
 ## 🛠️ Overview
 
-This demo shows how to connect a 3-joint robotic arm to ROS 2 using serial communication with a **Raspberry Pi Pico 2 (RP2040)**. Two main controller configurations are shown:
+This demo shows how to connect a 3-joint robotic arm to ROS 2 using serial communication with a **Raspberry Pi Pico 2 (RP2350)**. Two main controller configurations are shown:
 
 - `forward_position_controller`
 - `joint_trajectory_controller`
