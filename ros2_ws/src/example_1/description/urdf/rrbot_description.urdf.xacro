@@ -93,7 +93,7 @@
     <origin xyz="0 ${width} ${0.01 + axel_offset}"/>
     <parent link="${prefix}link1"/>
     <child link="${prefix}link2"/>    
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 -1 0"/>
     <dynamics damping="0.7"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>
@@ -130,7 +130,7 @@
     <parent link="${prefix}link2"/>
     <child link="${prefix}link3"/>
     <origin xyz="0 ${width} ${height2 - axel_offset*2}" rpy="0 0 0"/>
-    <axis xyz="0 1 0"/>
+    <axis xyz="0 -1 0"/>
     <dynamics damping="0.7"/>
     <limit lower="${-1.75}" upper="${1.75}" effort="1.0" velocity="1.0"/>
   </joint>

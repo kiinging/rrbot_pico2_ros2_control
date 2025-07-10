@@ -1,68 +1,55 @@
-# rrbot_pico2_ros2_control
+# 🤖 rrbot_pico2_ros2_control
 
-This repository contains all the software components needed to control a 2-joint robotic arm using ROS 2 and a Raspberry Pi Pico 2 (RP2350) as the hardware interface. The main controller is an Orange Pi 5 Max (or any compatible SBC), which runs the ROS 2 control stack.
+This repository enables control of a **3-joint robotic arm** using:
+
+- **Raspberry Pi Pico 2 (RP2040)** for low-level firmware
+- **ROS 2** (e.g., Jazzy) running on an SBC like Orange Pi 5 Max
 
 ---
 
-## 📁 Repository Structure
+## 🧩 Key Components
 
-```bash
-rrbot_pico2_ros2_control/
-├── pico2_firmware/        # Firmware for the Raspberry Pi Pico 2 (RP2350)
-│   ├── build/             # Build directory (can be ignored in version control)
-│   ├── examples/          # Example usage (e.g., simple_servo)
-│   ├── include/           # Header files, including PCA9685 driver
-│   ├── src/               # Main application and driver sources
-│   ├── CMakeLists.txt     # Build configuration
-│   └── README.md          # Details about firmware
-├── ros2_ws/               # ROS 2 workspace
-│   └── src/
-│       └── rrbot_ros2_system/  # ROS 2 control packages for the 2-joint robot
-└── README.md              # Root README (this file)
+### 🔧 `pico2_firmware/`
+Firmware written in C++ for the RP2040 to drive servos using a PCA9685 over I2C. The microcontroller communicates with the ROS 2 stack over serial using a lightweight text-based protocol.
+
+### 🌐 `ros2_ws/src/example_1/`
+ROS 2 packages using `ros2_control` framework. Includes hardware interface implementations and launch files for both simulation and real hardware.
+
+---
+
+## 🔌 Serial Communication Protocol
+
+The Pico firmware uses a human-readable serial protocol:
+```
+m <index> <radians>  → Move servo
+e <index>            → Echo servo angle
+r                   → Reset all
+j <index> <radians>  → Feedback (auto-sent)
 ```
 
-🧠 Key Takeaway (Today’s Progress)
-The biggest breakthrough today was finding and integrating a ROS 2-compatible serial library that allows seamless communication with the Pico microcontroller. This replaces manual serial hacks with a clean, buildable, ROS-native solution.
+---
 
-🔌 Reliable Serial Library for ROS 2
-We are using a ROS 2 port of the popular wjwwood/serial library, maintained here:
+## 📦 Serial Library for ROS 2
 
-🔗 https://github.com/tylerjw/serial/tree/ros2
+We use a ROS 2-compatible version of [wjwwood/serial](https://github.com/tylerjw/serial/tree/ros2). To install:
 
-This version is ROS 2-ready (ament_cmake), compiles cleanly in the workspace, and installs correctly with headers such as serial/serial.h and serial/impl/unix.h.
-
-✅ How to Install It
-bash
-Copy
-Edit
-# Navigate to your ROS 2 workspace
+```bash
 cd ~/ros2_projects/ros2_ws/src
-
-# Clone the ROS 2-compatible serial library
 git clone -b ros2 https://github.com/tylerjw/serial.git
-
-# Build your workspace
 cd ..
 colcon build
-
-# Source the overlay
 source install/setup.bash
-Now your ROS 2 packages can cleanly #include <serial/serial.h> and interface with /dev/ttyACM0 (or whatever device your Pico is on).
+```
 
-📡 Communication Protocol with the Pico
-The firmware running on the Pico uses a simple text-based serial protocol:
+Now your ROS 2 code can easily communicate with the Pico via `/dev/ttyACM0`.
 
-m <servo_index> <radians> — move servo to position
+---
 
-e <servo_index> — echo current servo position
+## 🔗 Resources
 
-r — reset all servos to 0
+- Servo firmware base: [grzesiek2201/servobot_pico_driver](https://github.com/grzesiek2201/servobot_pico_driver)
+- ROS 2 serial library: [tylerjw/serial/tree/ros2](https://github.com/tylerjw/serial/tree/ros2)
 
-j <index> <radians> — (auto-published) joint feedback, sent periodically
+---
 
-These messages are parsed and executed onboard the Pico. You can listen to the feedback and publish it to /joint_states in your ROS 2 node.
-
-📚 Sources & References
-📦 Firmware adapted from: https://github.com/grzesiek2201/servobot_pico_driver
-
-📡 ROS 2 serial library: https://github.com/tylerjw/serial/tree/ros2
+🍕 Built with microcontrollers and mechatronics love.

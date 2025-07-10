@@ -209,9 +209,13 @@ void receiveTask(__unused void *param)
                         int angle_deg = static_cast<int>(angle_rad * 180.0 / 3.14159);
 
                         if (nservo >= 0 && static_cast<size_t>(nservo) < myServos.size()) {
+                             // Flip direction for servo 1 and 2
+                            if (nservo == 1 || nservo == 2) {
+                                angle_deg = -angle_deg;
+                            }
                             myServos[nservo].setPosition(angle_deg);
-                            // printf("Moving servo %d to %d degrees (%.2f rad)\r\n",
-                            //        nservo, angle_deg, angle_rad);
+                        //     printf("Moving servo %d to %d degrees (%.2f rad)\r\n",
+                        //            nservo, angle_deg, angle_rad);
                         }
 
                     } else if (mode == "r") {

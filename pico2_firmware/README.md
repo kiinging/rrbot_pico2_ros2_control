@@ -1,62 +1,78 @@
-## Adafruit Servo Driver Library for Pi Pico
+# 🔧 pico2_firmware — RP2040 Servo Control
 
-A lightweight C/C++ SDK–compatible fork of the [Adafruit-Servo-Driver-Library-Pi-Pico](https://github.com/grzesiek2201/Adafruit-Servo-Driver-Library-Pi-Pico) by **grzesiek2201**.  
-Originally based on Adafruit’s PCA9685 drivers, this version is tailored for the Raspberry Pi Pico (RP2040) using the official C/C++ SDK.
-
----
-
-## 🚀 Simple Servo Test Example
-
-A “hello world”–style demo that sweeps a single servo channel back and forth via the PCA9685 PWM driver. Perfect for validating your wiring, firmware build, and Pico 2 hardware setup.
-
-### 📂 Directory Layout
-
-examples/simple_servo/
-├── CMakeLists.txt # Build script for the test executable
-├── simple_servo.cpp # Example code: servo sweep logic
-└── build/ # (Out-of-source build directory)
-
+This firmware enables the **Raspberry Pi Pico 2 (RP2040)** to control servo motors using a **PCA9685 PWM driver**, communicating via serial UART with a host running ROS 2.
 
 ---
 
-### 🔧 Building
+## 🧠 Features
 
-1. **Create & enter** the build directory:
-   ```bash
-   mkdir -p build
-   cd build
+- UART command parser for ROS 2 integration
+- Joint position feedback via serial
+- Lightweight driver for Adafruit PCA9685 PWM chip
+- Built with the official RP2040 C/C++ SDK
 
-    Configure with CMake (targeting Pico 2):
+---
 
+## 📡 Serial Protocol
+
+The firmware listens for simple commands like:
+
+```
+m 0 1.57     → Move joint 0 to 1.57 rad
+e 0          → Echo current position of joint 0
+r            → Reset all joints to 0
+j 1 0.78     → Feedback (auto-sent to host)
+```
+
+---
+
+## 📂 Structure
+
+```
+pico2_firmware/
+├── examples/            # e.g. simple_servo test
+├── include/             # Headers, drivers
+├── src/                 # Main firmware source
+├── build/               # (build artifacts)
+└── CMakeLists.txt
+```
+
+---
+
+## 🚀 Simple Servo Example
+
+This test toggles one servo smoothly back and forth.
+
+### 🧪 Build it
+
+```bash
+mkdir -p build
+cd build
 cmake -DPICO_BOARD=pico2 ..
+make
+```
 
-Compile:
+This generates:
 
-    make
+- `servo_driver.elf`
+- `servo_driver.uf2`
 
-    This produces:
+### ⚡ Flash via USB
 
-        servo_driver.elf
+1. Hold **BOOTSEL**
+2. Plug in Pico 2 via USB
+3. Drag `servo_driver.uf2` onto `RPI-RP2`
 
-        servo_driver.bin
+### 🔍 Flash via OpenOCD (optional)
 
-        servo_driver.uf2
+```bash
+sudo openocd -f interface/cmsis-dap.cfg -f target/rp2040.cfg \
+  -c "adapter speed 5000" \
+  -c "program servo_driver.elf verify reset exit"
+```
 
-🔥 Flashing & Debugging
-USB UF2 (Quickest)
+---
 
-    Hold BOOTSEL on the Pico 2 and plug it into USB.
+## 🔗 Credits
 
-    Copy servo_driver.uf2 onto the RPI-RP2 device.
-
-    The Pico will reboot and start running the test.
-
-OpenOCD + CMSIS-DAP Probe
-
-If you have a CMSIS-DAP (or Picoprobe) attached:
-
-sudo openocd -f interface/cmsis-dap.cfg -f target/rp2350.cfg -c "adapter speed 5000" -c "program servo_driver.elf verify reset exit"
-
-This command will flash, verify, and reset your Pico 2 in one step.
-
-🎉 Now watch your servo sweep smoothly between its endpoints! Use this example as a quick hardware check whenever you need.
+- Forked from: [Adafruit-Servo-Driver-Library-Pi-Pico](https://github.com/grzesiek2201/Adafruit-Servo-Driver-Library-Pi-Pico)

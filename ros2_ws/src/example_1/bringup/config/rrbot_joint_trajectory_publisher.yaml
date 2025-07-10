@@ -6,13 +6,13 @@ publisher_joint_trajectory_controller:
 
     goal_names: ["pos1", "pos2", "pos3", "pos4"]
     pos1:
-      positions: [0.785, 0.785]
+      positions: [0.785, 0.785, 0.785]
     pos2:
-      positions: [0.0, 0.0]
+      positions: [0.0, 0.0, 0.0]
     pos3:
-      positions: [-0.785, -0.785]
+      positions: [-0.785, -0.785, -0.785]
     pos4:
-      positions: [0.0, 0.0]
+      positions: [0.0, 0.0, 0.0]
 
     joints:
       - joint1
