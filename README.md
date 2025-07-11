@@ -51,8 +51,9 @@ Now your ROS 2 code can easily communicate with the Pico via `/dev/ttyACM0`.
 - ROS 2 serial library: [tylerjw/serial/tree/ros2](https://github.com/tylerjw/serial/tree/ros2)
 
 ---
+
 ## 🎬 Live Demo
 
-[![RRBot Preview](ros2_ws/src/example_1/doc/rrbot_preview.gif)](ros2_ws/src/example_1/doc/rrbot.mp4)
+![RRBot Demo](ros2_ws/src/example_1/doc/rrbot.gif)
 
 🍕 Built with microcontrollers and mechatronics love.
