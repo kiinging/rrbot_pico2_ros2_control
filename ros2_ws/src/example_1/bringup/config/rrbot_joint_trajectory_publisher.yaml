@@ -4,14 +4,22 @@ publisher_joint_trajectory_controller:
     controller_name: "joint_trajectory_position_controller"
     wait_sec_between_publish: 6
 
-    goal_names: ["pos1", "pos2", "pos3", "pos4"]
+    goal_names: ["pos1", "pos2", "pos3", "pos4", "pos5", "pos6", "pos7", "pos8"]
     pos1:
-      positions: [0.785, 0.785, 0.785]
+      positions: [-0.785, -0.785, -0.785]      
     pos2:
       positions: [0.0, 0.0, 0.0]
     pos3:
-      positions: [-0.785, -0.785, -0.785]
+      positions: [0.785, 0.785, 0.785]
     pos4:
+      positions: [0.0, 0.0, 0.0]
+    pos5:
+      positions: [-0.785, 0.785, 0.785]
+    pos6:
+      positions: [0.0, 0.0, 0.0]
+    pos7:
+      positions: [0.785, -0.785, -0.785]
+    pos8:
       positions: [0.0, 0.0, 0.0]
 
     joints:
