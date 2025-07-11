@@ -2,6 +2,8 @@
 ## 🎬 Live Demo
 
 ![RRBot Demo](ros2_ws/src/example_1/doc/rrbot.gif)
+
+
 This repository enables control of a **3-joint robotic arm** using:
 
 - **Raspberry Pi Pico 2 (RP2350)** for low-level firmware
