@@ -53,7 +53,6 @@ Now your ROS 2 code can easily communicate with the Pico via `/dev/ttyACM0`.
 ---
 ## 🎬 Live Demo
 
-[▶️ Watch the RRBot Demo (MP4)](https://github.com/yourusername/yourrepo/raw/main/ros2_ws/src/example_1/doc/rrbot.mp4)
-
+[![RRBot Preview](ros2_ws/src/example_1/doc/rrbot_preview.gif)](ros2_ws/src/example_1/doc/rrbot.mp4)
 
 🍕 Built with microcontrollers and mechatronics love.
